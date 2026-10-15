@@ -32,6 +32,8 @@
     .donation-trust-note{margin-top:27px;padding-top:14px;border-top:1px solid #345640;font-size:12px;line-height:1.65;color:#b6cabc}.donation-trust-note strong{color:#ecf2e5}
     .transfer-clarity{font-size:12px;line-height:1.65;color:#bad0be;padding:14px 0;margin:12px 0 16px;border-top:1px solid #406447}.transfer-clarity strong{color:#eff5e8}
     .wallet-simple-actions{display:grid;gap:10px;margin:18px 0 8px}.wallet-simple-actions button{text-align:center}.wallet-simple-actions .btn{min-height:54px}
+    .support-appeal{font-size:19px;line-height:1.7;color:#dbefc7;font-weight:650;max-width:520px}
+    .support-clarity{margin-top:22px;padding-top:16px;border-top:1px solid #36543e;font-size:12px;line-height:1.6;color:#b1c6b7;max-width:520px}.support-clarity strong{color:#e4f4df}
     @media(max-width:800px){.nav a:not(.nav-cta){display:none}.hero{padding:55px 0 64px}.hero-layout{grid-template-columns:1fr}.mascot-wrap{min-height:360px}.hero h1{font-size:clamp(57px,13vw,90px)}.story,.donation-grid{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr}.section{padding:71px 0}.transparency{grid-template-columns:1fr}.band .wrap{flex-direction:column;align-items:flex-start;gap:5px}.footer-inner{flex-direction:column}.story-visual{min-height:290px}.wallet-panel{padding:21px}.donation-grid{gap:26px}}
     @media(max-width:420px){.wrap{padding:0 18px}.brand{font-size:20px}.nav-cta{padding:9px 12px}.hero h1{font-size:58px}.mascot-wrap{min-height:310px}.artwork{width:80%}.hero-buttons .btn{width:100%}}
   </style>
@@ -70,22 +72,26 @@
         <div class="story-visual" aria-label="Illustrated abstract forest with animal rescue motif"><svg viewBox="0 0 300 300" aria-hidden="true"><circle cx="150" cy="128" r="105" fill="#a0bd77" opacity=".17"/><path d="M150 265V50M150 98L85 38M150 145L222 77M150 208L90 157" stroke="#bed69d" stroke-width="18" stroke-linecap="round"/><path d="M49 264L49 169M49 212L20 185M249 264V158M249 199L278 172" stroke="#aac792" stroke-width="13" stroke-linecap="round"/><circle cx="90" cy="39" r="23" fill="#a7be87"/><circle cx="224" cy="78" r="35" fill="#8bae77"/><circle cx="45" cy="158" r="32" fill="#a3c190"/><circle cx="252" cy="145" r="35" fill="#9ab782"/><path d="M115 195C104 180 78 193 86 216C93 238 150 268 150 268S207 237 214 216C222 192 196 180 184 195L150 227Z" fill="#f7c694" stroke="#f7d9ae" stroke-width="5"/></svg><span class="viz-caption">Original illustration · not footage of a rescue</span></div>
       </div>
     </div></section>
-    <section class="section goal-display" id="goal"><div class="wrap">
-      <div class="goal-box"><div class="eyebrow">Project funding target</div><h2>Goal: 8,000 SOL</h2>
-        <div class="goal-count"><span>429.09 SOL <small>(reported by organizer, unverified)</small></span><span>8,000 SOL goal</span></div>
-        <div class="goal-rail" role="img" aria-label="Illustrative progress: 5.36%, organizer-reported and unverified"><div></div></div>
-        <p class="goal-foot">5.36% of goal · reported figure</p>
-      </div></div></section>
-    <section class="section donation-section" id="donate"><div class="wrap donation-grid"><div class="donation-copy"><span class="eyebrow">03 — Optional project support</span><h2>Support the mission.<br>Stay informed.</h2><p style="color:#acc5b2">Support RescueFlare's independent animal-welfare awareness work by transferring SOL to the public project wallet. Check the destination on Solscan before sending.</p></div>
-      <div class="wallet-panel"><span class="eyebrow">SOLANA MAINNET</span><h3>Send any amount of SOL</h3><p class="helper">Copy the address, paste it into your Solana wallet, and choose your own transfer amount. Or scan the QR code.</p><div class="qr-wrap"><img src="wallet-qr.png" alt="QR code encoding the public Solana wallet address, not an amount" width="170" height="170"><p><strong>Scan the Solana address</strong><br>The QR contains only the wallet address. Verify it in your wallet before approving.</p></div><span class="address-label">RescueFlare project wallet · Solana</span><div class="address-box" id="wallet-address">GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es</div><p class="transfer-clarity">Any SOL amount is welcome as voluntary project support. Funds go to this <strong>project wallet, not directly to a registered animal-rescue charity</strong>. The displayed 429.09 SOL is organizer-reported and unverified. Transfers are irreversible and do not provide a token or tax receipt.</p>
-<div class="wallet-simple-actions">
-  <button id="copy-wallet" type="button" class="btn btn-primary wide">Copy wallet address</button>
-  <a id="donate-action" class="btn btn-secondary wide" href="solana:GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es">Open Solana wallet ↗</a>
-</div>
-<p class="transfer-note" role="status" id="transfer-note">Copy the address, open your Solana wallet, choose <strong>Send SOL</strong>, paste the address and enter any amount. Confirm the network and recipient before approving.</p>
-<div class="small-actions"><a id="wallet-explorer" href="https://solscan.io/account/GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es" target="_blank" rel="noopener noreferrer">Verify address on Solscan ↗</a></div>
-<div id="onchain-balance" class="balance-display" aria-live="polite">Current on-chain wallet balance: loading… (not a donation total).</div>
-<p class="disclaimer-small">The website never asks for private keys or a recovery phrase. Some wallets cannot open from a browser link; copying the address works with any Solana wallet.</p></div>
+    <section class="section donation-section" id="donate"><div class="wrap donation-grid">
+      <div class="donation-copy">
+        <span class="eyebrow">03 — Support &amp; awareness</span>
+        <h2>Every orangutan<br>deserves a chance. 🐵</h2>
+        <p class="support-appeal">Give whatever you can spare to support awareness for vulnerable orangutans. Every act of kindness matters.</p>
+        <p class="support-clarity">SOL transfers go to the <strong>RescueFlare project wallet</strong>, not directly to a registered animal-rescue organization. No charitable impact or tax receipt is guaranteed.</p>
+      </div>
+      <div class="wallet-panel">
+        <span class="eyebrow">SOLANA MAINNET</span>
+        <h3>Scan QR or copy the address</h3>
+        <p class="helper">Open your Solana wallet, choose Send SOL, then scan the QR code or enter the address below. You decide how much to send in your own wallet.</p>
+        <div class="qr-wrap">
+          <img src="wallet-qr.png" alt="QR code containing the RescueFlare project wallet address on Solana mainnet" width="170" height="170">
+          <p><strong>QR · SOL address</strong><br>Confirm the destination in your wallet before making a transfer.</p>
+        </div>
+        <span class="address-label">RescueFlare project wallet · Solana mainnet</span>
+        <div class="address-box" id="wallet-address">GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es</div>
+        <div class="small-actions"><a id="wallet-explorer" href="https://solscan.io/account/GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es" target="_blank" rel="noopener noreferrer">View address on Solscan ↗</a></div>
+        <p class="disclaimer-small">SOL transfers are irreversible. RescueFlare is an independent community project, not a registered animal-rescue charity. Never share your wallet's seed phrase or private key.</p>
+      </div>
     </div></section>
     <section class="section" id="transparency"><div class="wrap"><div class="section-head"><span class="eyebrow">04 — Public records</span><h2>Don't just trust.<br>Verify.</h2><p>These facts are not guarantees. They indicate exactly what is public, what is asserted by the organizer, and what remains independently unverified.</p></div>
       <div class="transparency"><div class="meta"><div class="meta-label">Token</div><div class="meta-value"><strong id="token-name">RescueFlare</strong> · <span id="token-ticker">$RFLARE</span><br><small id="contract-status" style="color:#a6bdaf">Token not launched</small></div></div>
