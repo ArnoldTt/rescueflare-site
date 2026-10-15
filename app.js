@@ -19,18 +19,41 @@ setLink('x-link',cfg.xUrl||'','X profile — coming soon');setLink('social-x',cf
 setLink('report-link',cfg.reportUrl||'','Public disbursement reports — pending');
 setLink('ngo-link',cfg.beneficiaryConfirmed?cfg.beneficiaryUrl:'','Beneficiary — pending confirmation');
 setLink('wallet-explorer',validAddress(wallet)?'https://solscan.io/account/'+wallet:'','Explorer unavailable');
-let amount='0.05';
-const input=$('custom-amount'),send=$('donate-action'),check=$('donor-consent'),copy=$('copy-wallet');
-function updateAmount(v){const n=Number(v);if(!Number.isFinite(n)||n<0.001||n>100){amount=null;}else{amount=String(Number(n.toFixed(9)));}}
-function updateSend(){const allowed=cfg.projectWalletSupportEnabled===true&&validAddress(wallet)&&check.checked&&amount!==null;if(!allowed){send.removeAttribute('href');send.setAttribute('aria-disabled','true');send.classList.add('disabled');send.textContent=!check.checked?'Read and accept terms to open wallet':amount===null?'Enter a valid SOL amount':'Transfer unavailable';return;}
- const params=new URLSearchParams({amount,label:'RescueFlare project support',message:'Voluntary project support. NOT a direct registered charity donation.'});
- send.href='solana:'+wallet+'?'+params.toString();send.removeAttribute('aria-disabled');send.classList.remove('disabled');send.textContent='Open wallet to send '+amount+' SOL ↗';
+// Simple recipient-only Solana transfers: each supporter chooses the amount in their own wallet.
+const send=$('donate-action'),copy=$('copy-wallet'),note=$('transfer-note');
+const hasValidWallet=validAddress(wallet);
+const canOpenWallet=hasValidWallet&&cfg.projectWalletSupportEnabled===true;
+if(canOpenWallet){
+  send.href='solana:'+wallet;
+  send.removeAttribute('aria-disabled');
+  send.classList.remove('disabled');
+  send.textContent='Open Solana wallet ↗';
+}else{
+  send.removeAttribute('href');
+  send.setAttribute('aria-disabled','true');
+  send.classList.add('disabled');
+  send.textContent='Wallet unavailable';
 }
-input.addEventListener('input',()=>{updateAmount(input.value);for(const b of document.querySelectorAll('[data-amount]')) b.classList.toggle('selected',Number(b.dataset.amount)===Number(input.value));updateSend();});
-for(const b of document.querySelectorAll('[data-amount]'))b.addEventListener('click',()=>{input.value=b.dataset.amount;input.dispatchEvent(new Event('input',{bubbles:true}));});
-check.addEventListener('change',updateSend);send.addEventListener('click',e=>{if(send.getAttribute('aria-disabled')==='true'){e.preventDefault();}});updateSend();
-copy.disabled=!validAddress(wallet);copy.textContent=validAddress(wallet)?'Copy address':'Address unavailable';
-copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(wallet);copy.textContent='Copied ✓';setTimeout(()=>copy.textContent='Copy address',2600);}catch{const sel=window.getSelection(),range=document.createRange();range.selectNodeContents($('wallet-address'));sel.removeAllRanges();sel.addRange(range);copy.textContent='Select address and copy';}});
+copy.disabled=!hasValidWallet;
+copy.textContent=hasValidWallet?'Copy wallet address':'Wallet unavailable';
+copy.addEventListener('click',async()=>{
+  if(!hasValidWallet)return;
+  try{
+    if(!navigator.clipboard?.writeText)throw Error('Clipboard unsupported');
+    await navigator.clipboard.writeText(wallet);
+    copy.textContent='Address copied ✓';
+    note.textContent='Copied. Open your Solana wallet, select Send SOL, paste the address and enter any amount you prefer.';
+    setTimeout(()=>{copy.textContent='Copy wallet address';},2600);
+  }catch{
+    const selected=document.createRange();
+    selected.selectNodeContents($('wallet-address'));
+    const selection=window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(selected);
+    copy.textContent='Select and copy the highlighted address';
+    note.textContent='The address is highlighted. Copy it manually and paste it into your Solana wallet.';
+  }
+});
 setText('year',new Date().getFullYear());
 async function checkChainBalance(){const e=$('onchain-balance');if(!e||!validAddress(wallet))return;
  const url='https://api.mainnet-beta.solana.com';const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),9000);
