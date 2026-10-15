@@ -35,6 +35,11 @@
     .support-appeal{font-size:19px;line-height:1.7;color:#dbefc7;font-weight:650;max-width:520px}
     .support-clarity{margin-top:22px;padding-top:16px;border-top:1px solid #36543e;font-size:12px;line-height:1.6;color:#b1c6b7;max-width:520px}.support-clarity strong{color:#e4f4df}
     .address-box{user-select:all;-webkit-user-select:all;cursor:text}
+    .launch-announcement{padding:0 0 27px}.launch-announcement-inner{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:22px 27px;border:1px solid #708d58;border-radius:20px;background:linear-gradient(110deg,#24452e,#143124 58%,#28452b);box-shadow:0 8px 28px #0002}
+    .launch-announcement-copy{max-width:780px}.launch-announcement-label{font-size:11px;letter-spacing:.12em;font-weight:900;color:#eacc85;display:block;margin-bottom:8px}.launch-announcement-copy strong{display:block;color:#f4e3b5;font-size:clamp(20px,2.5vw,30px);letter-spacing:-.035em}
+    .launch-announcement-copy p{margin:9px 0 0;color:#d0dfce;font-size:12px;line-height:1.55}.launch-announcement-timer{min-width:185px;text-align:center;border-radius:15px;background:#091e15;padding:13px 19px;border:1px solid #59734d}
+    .launch-announcement-timer span{display:block;color:#b1ccaa;letter-spacing:.12em;font-size:10px;font-weight:900}.launch-announcement-timer strong{display:block;margin-top:6px;color:#e5f6b2;white-space:nowrap;font-size:clamp(20px,2vw,28px);font-variant-numeric:tabular-nums}
+    @media(max-width:620px){.launch-announcement-inner{flex-direction:column;align-items:stretch;padding:20px}.launch-announcement-timer{min-width:0;text-align:left}.launch-announcement-copy strong{font-size:22px}}
     .progress-preview{padding:0 0 34px}.progress-preview-panel{max-width:1160px;padding:20px 28px 19px;background:linear-gradient(115deg,#123826,#13291c);border:1px solid #748b53;border-radius:20px;box-shadow:0 8px 35px #0002}
     .progress-preview-heading{font-size:11px;letter-spacing:.13em;color:#f7dda6;font-weight:900}
     .progress-preview-numbers{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:8px 0 15px;color:#ffe2a4}
@@ -73,6 +78,21 @@
         <span class="float-tag">🐾 KINDNESS IS <strong>ON-CHAIN</strong></span>
       </div>
     </div></section>
+    <section class="launch-announcement" aria-label="RescueFlare planned launch countdown">
+      <div class="wrap">
+        <div class="launch-announcement-inner">
+          <div class="launch-announcement-copy">
+            <span class="launch-announcement-label">🐵 PLANNED LAUNCH · OCTOBER 15, 2026</span>
+            <strong>16:23 AMSTERDAM · 14:23 UTC</strong>
+            <p>No presale. Official Pump.fun token link and mint address will appear after verified creation. Schedule subject to final eligibility and wallet checks.</p>
+          </div>
+          <div class="launch-announcement-timer" aria-label="Time remaining until planned launch">
+            <span>COUNTDOWN</span>
+            <strong id="launch-countdown">Calculating…</strong>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="progress-preview" aria-label="RescueFlare organizer-reported funding goal progress">
       <div class="wrap">
         <div class="progress-preview-panel">
@@ -85,7 +105,7 @@
             <span id="project-progress-rail" style="width:5.363625%"></span>
           </div>
           <div id="project-percent" class="progress-preview-status">5.36% of goal</div>
-          <p 
+          <p class="progress-source">Amount reported by the organizer; not independently verified. <a href="https://solscan.io/account/GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es" target="_blank" rel="noopener noreferrer">Public SOL wallet ↗</a></p>
         </div>
       </div>
     </section>
@@ -132,5 +152,27 @@
     </div></section>
       </main>
   <footer class="footer"><div class="wrap footer-inner"><div><div class="brand" style="font-size:19px"><span>🐾</span> RESCUEFLARE</div><p>Animal stories supported by independent public evidence. Nothing on this website constitutes financial advice, affiliation with a rescue organization, or a guaranteed donation outcome.</p></div><div class="foot-links"><a id="x-link" class="disabled" aria-disabled="true">X / @RFLareSol</a><a id="social-x" class="disabled" aria-disabled="true">X project profile ↗</a><a href="https://pump.fun" target="_blank" rel="noopener noreferrer">Pump.fun ↗</a></div></div><div class="wrap fine">© <span id="year">2026</span> RescueFlare · <span id="footer-ticker">$RFLARE</span> · Independent project · All third-party trademarks and articles belong to their respective owners.</div></footer>
+  <script>
+    (() => {
+      const output = document.getElementById('launch-countdown');
+      if (!output) return;
+      const target = Date.parse('2026-10-15T14:23:00Z');
+      const two = n => String(n).padStart(2, '0');
+      let interval;
+      function renderCountdown() {
+        const seconds = Math.ceil((target - Date.now()) / 1000);
+        if (seconds <= 0) {
+          output.textContent = 'Awaiting official mint';
+          if (interval) clearInterval(interval);
+          return;
+        }
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        output.textContent = two(hours) + ':' + two(minutes) + ':' + two(seconds % 60);
+      }
+      renderCountdown();
+      interval = setInterval(renderCountdown, 1000);
+    })();
+  </script>
 </body>
 </html>
