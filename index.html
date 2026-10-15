@@ -41,14 +41,17 @@
     .progress-preview-numbers strong{font-size:clamp(28px,4.4vw,46px);letter-spacing:-.05em}
     .progress-preview-numbers span{font-size:clamp(15px,2.6vw,24px);font-weight:800}
     .progress-preview-rail{height:14px;background:#071b13;border:1px solid #426348;overflow:hidden;border-radius:100px}
-    .progress-preview-rail span{display:block;width:5.363625%;height:100%;background:linear-gradient(90deg,#b5df78,#eac18a);border-radius:100px}
+    .progress-preview-rail span{display:block;width:0%;height:100%;background:linear-gradient(90deg,#b5df78,#eac18a);border-radius:100px;transition:width .7s ease}
     .progress-preview p{margin:10px 0 0;font-size:12px;color:#bed3c0}
     @media(max-width:480px){.progress-preview-panel{padding:18px}.progress-preview-numbers{flex-wrap:wrap;gap:2px}.progress-preview-numbers strong{font-size:32px}}
+    .live-indicator{display:inline-block;width:8px;height:8px;background:#befa80;border-radius:50%;box-shadow:0 0 12px #befa8088;margin-right:8px}
+    .progress-preview-status{font-size:12px;font-weight:800;color:#e0d5b1;margin-top:13px}
+    .progress-preview p a{color:#f4dda8;text-decoration:underline;text-underline-offset:3px}
     @media(max-width:800px){.nav a:not(.nav-cta){display:none}.hero{padding:55px 0 64px}.hero-layout{grid-template-columns:1fr}.mascot-wrap{min-height:360px}.hero h1{font-size:clamp(57px,13vw,90px)}.story,.donation-grid{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr}.section{padding:71px 0}.transparency{grid-template-columns:1fr}.band .wrap{flex-direction:column;align-items:flex-start;gap:5px}.footer-inner{flex-direction:column}.story-visual{min-height:290px}.wallet-panel{padding:21px}.donation-grid{gap:26px}}
     @media(max-width:420px){.wrap{padding:0 18px}.brand{font-size:20px}.nav-cta{padding:9px 12px}.hero h1{font-size:58px}.mascot-wrap{min-height:310px}.artwork{width:80%}.hero-buttons .btn{width:100%}}
   </style>
   <script defer src="config.js?v=fb9f284701b404f29e614fe83cf8570e7a754436"></script>
-  <script defer src="app.js?v=67d412c665ebd0e2be5d79c67e0d73c10d0454d6"></script>
+  <script defer src="app.js?v=b2bf33bf90ecf6cda6642d958020771685ecd328"></script>
 </head>
 <body>
   <header class="site-header"><div class="wrap header-inner">
@@ -69,12 +72,13 @@
         <span class="float-tag">🐾 KINDNESS IS <strong>ON-CHAIN</strong></span>
       </div>
     </div></section>
-    <section class="progress-preview" aria-label="Illustrative project fundraising progress, not actual donations"><div class="wrap">
+    <section class="progress-preview" aria-label="Real-time balance of the public RescueFlare Solana wallet"><div class="wrap">
       <div class="progress-preview-panel">
-        <div class="progress-preview-heading">ILLUSTRATIVE GOAL TRACKER · NOT VERIFIED DONATIONS</div>
-        <div class="progress-preview-numbers"><strong>429.09 SOL</strong><span>of 8,000 SOL target</span></div>
-        <div class="progress-preview-rail" role="img" aria-label="Illustrative progress 5.36 percent toward 8,000 SOL"><span></span></div>
-        <p>Design example only — the 429.09 SOL amount has not been verified as received.</p>
+        <div class="progress-preview-heading"><span class="live-indicator" aria-hidden="true"></span> LIVE SOLANA WALLET</div>
+        <div class="progress-preview-numbers"><strong id="live-wallet-sol" aria-live="polite">Loading…</strong><span>8,000 SOL goal</span></div>
+        <div class="progress-preview-rail" role="progressbar" aria-label="Wallet balance relative to project goal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="live-wallet-rail" style="width:0%"></span></div>
+        <div id="live-wallet-status" class="progress-preview-status" role="status">Checking Solana mainnet…</div>
+        <p id="live-wallet-details">Current wallet holdings, not a confirmed donation total. <a href="https://solscan.io/account/GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es" target="_blank" rel="noopener noreferrer">View wallet on Solscan ↗</a></p>
       </div>
     </div></section>
     <div class="band"><div class="wrap"><span>EVERY ORANGUTAN DESERVES A CHANCE 🐵</span><small>Transparent by design • Solana mainnet</small></div></div>
