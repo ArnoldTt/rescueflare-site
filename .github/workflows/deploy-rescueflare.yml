@@ -1,0 +1,48 @@
+name: Deploy RescueFlare static site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - app.js
+      - config.js
+      - golden-orangutan.webp
+      - wallet-qr.png
+      - favicon.svg
+      - .github/workflows/deploy-rescueflare.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: rescueflare-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+      - name: Package only published static assets
+        run: |
+          mkdir -p dist
+          cp index.html app.js config.js golden-orangutan.webp wallet-qr.png favicon.svg dist/
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
