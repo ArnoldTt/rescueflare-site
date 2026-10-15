@@ -6,8 +6,8 @@ const wallet = cfg.donationWallet || '';
 function validAddress(s) {return typeof s==='string' && /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s);}
 function safeHttpUrl(raw){try{const u=new URL(raw);return /^https?:$/.test(u.protocol)?u.href:'';}catch{return '';}}
 function setLink(id,url,missing){const e=$(id);if(!e)return;const u=safeHttpUrl(url);if(u){e.href=u;e.removeAttribute('aria-disabled');e.classList.remove('disabled');e.target='_blank';e.rel='noopener noreferrer';}else{e.removeAttribute('href');e.setAttribute('aria-disabled','true');e.classList.add('disabled');if(missing)e.textContent=missing;}}
-setText('brand-name',cfg.tokenName||'RescueFlare');setText('token-name',cfg.tokenName||'RescueFlare');
-for(const k of ['token-ticker','hero-ticker','footer-ticker'])setText(k,'$'+(cfg.ticker||'RFLARE'));
+setText('brand-name',cfg.tokenName||'Golden Orangutan');setText('token-name',cfg.tokenName||'Golden Orangutan');
+for(const k of ['token-ticker','hero-ticker','footer-ticker'])setText(k,'$'+(cfg.ticker||'GORANG'));
 setText('wallet-address',validAddress(wallet)?wallet:'Not configured — no transfers');
 setText('fee-recipient',cfg.creatorFeeRecipientText||'Pending selection and disclosure');
 setText('operator-disclosure',cfg.operatorDisclosure||'Independent project.');
