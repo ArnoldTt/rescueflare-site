@@ -15,9 +15,7 @@ window.RESCUEFLARE_CONFIG = {
   beneficiaryConfirmed: false,
   donationsEnabled: false, // direct nonprofit donations NOT enabled
   projectWalletSupportEnabled: true, // voluntary transfers to independently disclosed project wallet; charity use NOT verified
-  donationGoalSol: 8000,
-  organizerReportedSol: 429.09, // explicitly unverified; illustrative only // Set to true ONLY after recipient, operator, disclosures, and fundraising compliance are verified
   creatorFeeRecipientText: 'Pending selection and disclosure',
-  operatorDisclosure: 'Independent community project. Donation wallet address was supplied by the organizer, but control of the wallet and any nonprofit beneficiary have not yet been verified. Direct donations are not being solicited until required checks are complete. No affiliation with news publishers, animal rescue NGOs, or Pump.fun is claimed.',
+  operatorDisclosure: 'RescueFlare is an independent Solana meme community. Transfers to the disclosed project wallet support the project, not a registered animal-rescue nonprofit directly. No independent nonprofit beneficiary or charity affiliation has been established. Token purchases are separate speculative transactions, not donations.',
   reportUrl: '',      // optional link to publicly accessible grant/payment reports
 };
