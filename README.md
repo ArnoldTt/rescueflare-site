@@ -1,32 +1,23 @@
-# RescueFlare — GitHub Pages deployment
+# RescueFlare — transparent prerelease website
 
-This repository publishes a **pre-launch informational website** for $RFLARE. It contains only public site files.
+Static HTML/CSS/JavaScript website for GitHub Pages; no backend or wallet custody. Public address: `GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es`.
 
-## Setup (public GitHub repo required)
+## Important disclosures
+- The project is NOT a verified registered charity. Voluntary transfers go to its stated project-controlled wallet, NOT directly to a verified animal rescue NGO.
+- The organizer reports 500 SOL. **This has NOT been independently verified and is NOT displayed as verified fundraising.** The 500/8000 graphic is marked illustrative. A public balance is not the same as cumulative donations.
+- The live wallet balance requests `getBalance` from Solana's mainnet RPC, and displays an unavailable state when the request fails.
+- A transfer is enabled only when a user checks an explicit acknowledgment; the Solana Pay link opens their own wallet and never sends funds automatically. Some wallets don't support Solana Pay. The QR carries the address only.
+- No Pump.fun token mint has been provided; the trading link remains disabled. Mint address, creator fee donations, and NGO affiliation must not be claimed without proof.
 
-1. Create a **public** GitHub repository named `rescueflare-site`. Do not initialize with a README if the assistant will upload the files through GitHub integration.
-2. Upload the files at repository root, including `index.html`, `config.js`, `app.js`, and `favicon.svg`. The other assets are optional for the landing page.
-3. On GitHub, open **Settings → Pages**, choose **Deploy from a branch**, then choose **main** and **/(root)** and click **Save**.
-4. Wait until GitHub announces a deployed Pages URL. Typical format: `https://<github-user>.github.io/rescueflare-site/` (do not presume it is live until it responds successfully).
-5. Open the URL in a browser. Verify X and Solscan links. Check that payment links carry project-wallet disclosures, and do not describe them as verified charity gifts.
+## Files
+- `index.html` landing page
+- `config.js` public configuration (no private keys)
+- `app.js` payment-link UX, disclaimer and RPC wallet balance
+- `golden-orangutan.webp` website illustration
+- `pumpfun-token-image.jpg` artwork to be used when permitted by Pump.fun requirements
+- `wallet-qr.png` QR of the public project-controlled wallet (no amount)
 
-## Site configuration
+## Deployment
+Upload the files to the root of public repo `ArnoldTt/rescueflare-site` via GitHub's file upload UI. GitHub Pages settings: Deploy from a branch → `main` → `/(root)`. Wait for the active page at https://arnoldtt.github.io/rescueflare-site/. This ZIP itself has **not** been pushed to GitHub.
 
-All public settings live in `config.js`.
-
-- X: `https://x.com/RFLareSol`.
-- Separate public SOL wallet address: `GjcXBfnS8FT1XFtjQ8Tu3pRHzVsiTM62Q5TGhbt5p2Es` (ownership unverified).
-- `tokenMint: ''` and `pumpUrl: ''` until deployment is confirmed.
-- `beneficiaryConfirmed: false` and `donationsEnabled: false` remain in force for verified charitable donation claims. Separately, `projectTransfersEnabled: true` allows optional transfers to the public project-supplied wallet after an explicit acknowledgement. It does not represent an NGO donation or prove wallet control.
-
-**Token purchases are not charitable donations. No partner charity has authorized endorsement or acceptance.** Never put seed phrases, passwords or private keys in this repository.
-
-## External citations published on the website
-
-- [Reuters on relocation of eight orangutans, Oct 11, 2026](https://www.reuters.com/business/environment/indonesia-moves-8-endangered-orangutans-safety-after-borneo-fires-2026-10-11/)
-- [Associated Press on relocation, Oct 13, 2026](https://apnews.com/article/677ea800733334d3d2e45cbfcd9e4861)
-
-Assets have their source in original project materials. This repository is not endorsed by news publishers, animal-rescue organizations, or Pump.fun.
-## Public progress disclosure
-
-The organizer says that 500 SOL have been allocated toward a goal of 8,000 SOL. This is **organizer-reported and not independently confirmed** through transactions or beneficiary receipts. The site prominently identifies the status. Read the wallet's public transaction history rather than interpreting the indicator as audited charitable funds.
+Use a verifiable, agreed beneficiary and proof of wallet control before calling collected funds charitable donations.

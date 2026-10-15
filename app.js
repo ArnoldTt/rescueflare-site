@@ -1,116 +1,40 @@
 'use strict';
-/* RescueFlare public website.
- * SOL transfers are voluntary contributions to a project-supplied wallet.
- * Charitable status, wallet ownership, and 500 SOL reported figure are unverified.
- * No site functionality signs, submits, or simulates a payment.
- */
 const cfg = window.RESCUEFLARE_CONFIG || {};
-const byId = (id) => document.getElementById(id);
-const put = (id, value) => { const node = byId(id); if (node) node.textContent = value; };
-function solanaAddressSyntax(s) { return typeof s === 'string' && /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s); }
-function safeHttpUrl(raw) {
-  try { const u = new URL(raw); return ['http:', 'https:'].includes(u.protocol) ? u.href : ''; }
-  catch { return ''; }
+const $ = id => document.getElementById(id);
+const setText = (id, value) => {const el=$(id);if(el)el.textContent=value;};
+const wallet = cfg.donationWallet || '';
+function validAddress(s) {return typeof s==='string' && /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s);}
+function safeHttpUrl(raw){try{const u=new URL(raw);return /^https?:$/.test(u.protocol)?u.href:'';}catch{return '';}}
+function setLink(id,url,missing){const e=$(id);if(!e)return;const u=safeHttpUrl(url);if(u){e.href=u;e.removeAttribute('aria-disabled');e.classList.remove('disabled');e.target='_blank';e.rel='noopener noreferrer';}else{e.removeAttribute('href');e.setAttribute('aria-disabled','true');e.classList.add('disabled');if(missing)e.textContent=missing;}}
+setText('brand-name',cfg.tokenName||'RescueFlare');setText('token-name',cfg.tokenName||'RescueFlare');
+for(const k of ['token-ticker','hero-ticker','footer-ticker'])setText(k,'$'+(cfg.ticker||'RFLARE'));
+setText('wallet-address',validAddress(wallet)?wallet:'Not configured — no transfers');
+setText('fee-recipient',cfg.creatorFeeRecipientText||'Pending selection and disclosure');
+setText('operator-disclosure',cfg.operatorDisclosure||'Independent project.');
+setText('ngo-status',cfg.beneficiaryConfirmed&&cfg.beneficiaryName?'Confirmed: '+cfg.beneficiaryName:'Recipient not yet independently confirmed');
+setText('contract-status',validAddress(cfg.tokenMint)?cfg.tokenMint:'Token not launched');
+const live=validAddress(cfg.tokenMint);if(live){$('token-pill').textContent='TOKEN LIVE';$('token-pill').classList.add('live');}
+setLink('pump-link',live&&cfg.pumpUrl?cfg.pumpUrl:'','Pump.fun — launch pending');
+setLink('x-link',cfg.xUrl||'','X profile — coming soon');setLink('social-x',cfg.xUrl||'','X profile — coming soon');
+setLink('report-link',cfg.reportUrl||'','Public disbursement reports — pending');
+setLink('ngo-link',cfg.beneficiaryConfirmed?cfg.beneficiaryUrl:'','Beneficiary — pending confirmation');
+setLink('wallet-explorer',validAddress(wallet)?'https://solscan.io/account/'+wallet:'','Explorer unavailable');
+let amount='0.05';
+const input=$('custom-amount'),send=$('donate-action'),check=$('donor-consent'),copy=$('copy-wallet');
+function updateAmount(v){const n=Number(v);if(!Number.isFinite(n)||n<0.001||n>100){amount=null;}else{amount=String(Number(n.toFixed(9)));}}
+function updateSend(){const allowed=cfg.projectWalletSupportEnabled===true&&validAddress(wallet)&&check.checked&&amount!==null;if(!allowed){send.removeAttribute('href');send.setAttribute('aria-disabled','true');send.classList.add('disabled');send.textContent=!check.checked?'Read and accept terms to open wallet':amount===null?'Enter a valid SOL amount':'Transfer unavailable';return;}
+ const params=new URLSearchParams({amount,label:'RescueFlare project support',message:'Voluntary project support. NOT a direct registered charity donation.'});
+ send.href='solana:'+wallet+'?'+params.toString();send.removeAttribute('aria-disabled');send.classList.remove('disabled');send.textContent='Open wallet to send '+amount+' SOL ↗';
 }
-function link(id, raw, disabledLabel) {
-  const el = byId(id); if (!el) return;
-  const url = safeHttpUrl(raw);
-  if (url) {
-    el.href = url; el.rel = 'noopener noreferrer'; el.target = '_blank';
-    el.classList.remove('disabled'); el.removeAttribute('aria-disabled');
-  } else {
-    el.removeAttribute('href'); el.classList.add('disabled');
-    el.setAttribute('aria-disabled','true');
-    if (disabledLabel) el.textContent = disabledLabel;
-  }
-}
-const wallet = cfg.donationWallet;
-const walletFormatLooksValid = solanaAddressSyntax(wallet);
-const isTokenLive = solanaAddressSyntax(cfg.tokenMint) && Boolean(safeHttpUrl(cfg.pumpUrl));
-put('brand-name', cfg.tokenName || 'RescueFlare');
-put('token-name', cfg.tokenName || 'RescueFlare');
-put('token-ticker', '$' + (cfg.ticker || 'RFLARE'));
-put('hero-ticker', '$' + (cfg.ticker || 'RFLARE'));
-put('footer-ticker', '$' + (cfg.ticker || 'RFLARE'));
-put('wallet-address', walletFormatLooksValid ? wallet : 'Address unavailable');
-put('ngo-status', cfg.beneficiaryConfirmed && cfg.beneficiaryName ? 'Confirmed: ' + cfg.beneficiaryName : 'Recipient not yet confirmed');
-put('fee-recipient', cfg.creatorFeeRecipientText || 'Pending selection and disclosure');
-put('operator-disclosure', cfg.operatorDisclosure || 'Operator disclosures pending.');
-put('contract-status', isTokenLive ? cfg.tokenMint : 'Token not launched');
-if (isTokenLive) { byId('token-pill')?.classList.add('live'); put('token-pill','TOKEN LIVE'); }
-link('pump-link', isTokenLive ? cfg.pumpUrl : '', 'Pump.fun — launch pending');
-link('x-link', cfg.xUrl, 'X profile — coming soon');
-link('social-x', cfg.xUrl, 'X project profile — coming soon');
-link('report-link', cfg.reportUrl, 'Public disbursement reports — pending');
-link('ngo-link', cfg.beneficiaryConfirmed ? cfg.beneficiaryUrl : '', 'Beneficiary — pending confirmation');
-link('wallet-explorer', walletFormatLooksValid ? 'https://solscan.io/account/' + wallet : '', 'Wallet explorer unavailable');
-const canOpenWallet = walletFormatLooksValid && cfg.projectTransfersEnabled === true;
-const qr = byId('wallet-qr');
-if (qr && walletFormatLooksValid) {
-  // Only a public wallet address goes to a third-party QR endpoint. Independently verify scans.
-  qr.src = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=' + encodeURIComponent('solana:' + wallet);
-  qr.onerror = () => { qr.style.display='none'; };
-} else if (qr) { qr.hidden = true; }
-let selected = '0.05';
-const custom = byId('custom-sol');
-const approve = byId('risk-ack');
-const donate = byId('donate-action');
-const hint = byId('transfer-hint');
-function checkedAmount() {
-  const raw = String(custom?.value ?? selected).trim();
-  const amount = Number(raw);
-  if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw) || !Number.isFinite(amount) || amount <= 0 || amount > 8000) return null;
-  return raw;
-}
-function refreshTransfer() {
-  if (!donate) return;
-  const amount = checkedAmount();
-  const ready = canOpenWallet && approve?.checked === true && amount !== null;
-  if (ready) {
-    const params = new URLSearchParams({amount, label:'RescueFlare project wallet', message:'Voluntary project contribution. Not a verified charitable donation.'});
-    donate.href = 'solana:' + wallet + '?' + params;
-    donate.classList.remove('disabled'); donate.removeAttribute('aria-disabled');
-    donate.textContent='Open wallet to send ' + amount + ' SOL ↗';
-    if (hint) hint.textContent='Your wallet must confirm any transaction. Verify the full address and amount before sending. If this link cannot open a wallet, copy the address and send manually.';
-  } else {
-    donate.removeAttribute('href'); donate.classList.add('disabled');
-    donate.setAttribute('aria-disabled','true');
-    donate.textContent = !canOpenWallet ? 'Project wallet transfers unavailable' : !amount ? 'Enter a valid SOL amount' : 'Accept disclosures to open wallet transfer';
-    if (hint) hint.textContent='No transfer is initiated by this site. Read the disclosures first. QR scanning or copying a public wallet address does not verify who controls that wallet.';
-  }
-}
-for (const btn of document.querySelectorAll('[data-amount]')) {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-amount]').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selected = btn.dataset.amount || selected;
-    if (custom) custom.value=selected;
-    refreshTransfer();
-  });
-}
-custom?.addEventListener('input', () => {
-  document.querySelectorAll('[data-amount]').forEach(b=>b.classList.toggle('selected',b.dataset.amount===custom.value));
-  refreshTransfer();
-});
-approve?.addEventListener('change',refreshTransfer);
-refreshTransfer();
-const copy = byId('copy-wallet');
-if (copy) {
-  copy.disabled=!walletFormatLooksValid;
-  copy.textContent=walletFormatLooksValid ? 'Copy wallet address' : 'Address unavailable';
-  copy.addEventListener('click', async () => {
-    if (!walletFormatLooksValid) return;
-    try {
-      await navigator.clipboard.writeText(wallet);
-      copy.textContent='Address copied ✓';
-    } catch {
-      const target=byId('wallet-address');
-      if (target) {
-        const range=document.createRange(); range.selectNodeContents(target);
-        const selection=window.getSelection(); selection.removeAllRanges(); selection.addRange(range);
-      }
-      copy.textContent='Select address and copy manually';
-    }
-  });
-}
-put('year', new Date().getFullYear());
+input.addEventListener('input',()=>{updateAmount(input.value);for(const b of document.querySelectorAll('[data-amount]')) b.classList.toggle('selected',Number(b.dataset.amount)===Number(input.value));updateSend();});
+for(const b of document.querySelectorAll('[data-amount]'))b.addEventListener('click',()=>{input.value=b.dataset.amount;input.dispatchEvent(new Event('input',{bubbles:true}));});
+check.addEventListener('change',updateSend);send.addEventListener('click',e=>{if(send.getAttribute('aria-disabled')==='true'){e.preventDefault();}});updateSend();
+copy.disabled=!validAddress(wallet);copy.textContent=validAddress(wallet)?'Copy address':'Address unavailable';
+copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(wallet);copy.textContent='Copied ✓';setTimeout(()=>copy.textContent='Copy address',2600);}catch{const sel=window.getSelection(),range=document.createRange();range.selectNodeContents($('wallet-address'));sel.removeAllRanges();sel.addRange(range);copy.textContent='Select address and copy';}});
+setText('year',new Date().getFullYear());
+async function checkChainBalance(){const e=$('onchain-balance');if(!e||!validAddress(wallet))return;
+ const url='https://api.mainnet-beta.solana.com';const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),9000);
+ try{const r=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'getBalance',params:[wallet,{commitment:'finalized'}]}),signal:controller.signal});if(!r.ok)throw Error('RPC unavailable');const j=await r.json();if(typeof j?.result?.value!=='number')throw Error('No reliable balance');const balance=j.result.value/1e9;
+ e.innerHTML='<strong>Live SOL wallet balance:</strong> '+balance.toLocaleString('en-US',{maximumFractionDigits:9})+' SOL (finalized, from public Solana RPC). <strong>This is NOT a donation total or proof of charitable impact.</strong>';
+ }catch{e.innerHTML='<strong>Live balance unavailable.</strong> Public Solana RPC could not be reached from this browser. <a href="https://solscan.io/account/'+wallet+'" target="_blank" rel="noopener noreferrer" style="color:#c8fc7f;text-decoration:underline">Check the wallet independently on Solscan ↗</a>. No donations have been independently verified.';}finally{clearTimeout(timer);}}
+checkChainBalance();
