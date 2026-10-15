@@ -6,15 +6,15 @@ const wallet = cfg.donationWallet || '';
 function validAddress(s) {return typeof s==='string' && /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s);}
 function safeHttpUrl(raw){try{const u=new URL(raw);return /^https?:$/.test(u.protocol)?u.href:'';}catch{return '';}}
 function setLink(id,url,missing){const e=$(id);if(!e)return;const u=safeHttpUrl(url);if(u){e.href=u;e.removeAttribute('aria-disabled');e.classList.remove('disabled');e.target='_blank';e.rel='noopener noreferrer';}else{e.removeAttribute('href');e.setAttribute('aria-disabled','true');e.classList.add('disabled');if(missing)e.textContent=missing;}}
-setText('brand-name',cfg.tokenName||'Golden Orangutan');setText('token-name',cfg.tokenName||'Golden Orangutan');
-for(const k of ['token-ticker','hero-ticker','footer-ticker'])setText(k,'$'+(cfg.ticker||'GORANG'));
+setText('brand-name',cfg.tokenName||'RescueFlare');setText('token-name',cfg.tokenName||'RescueFlare');
+for(const k of ['token-ticker','hero-ticker','footer-ticker'])setText(k,'$'+(cfg.ticker||'RFLARE'));
 setText('wallet-address',validAddress(wallet)?wallet:'Not configured — no transfers');
 setText('fee-recipient',cfg.creatorFeeRecipientText||'Pending selection and disclosure');
 setText('operator-disclosure',cfg.operatorDisclosure||'Independent project.');
 setText('ngo-status',cfg.beneficiaryConfirmed&&cfg.beneficiaryName?'Confirmed: '+cfg.beneficiaryName:'Recipient not yet independently confirmed');
-setText('contract-status',validAddress(cfg.tokenMint)?cfg.tokenMint:'Token not launched');
-const live=validAddress(cfg.tokenMint);if(live){$('token-pill').textContent='TOKEN LIVE';$('token-pill').classList.add('live');}
-setLink('pump-link',live&&cfg.pumpUrl?cfg.pumpUrl:'','Pump.fun — launch pending');
+setText('contract-status',validAddress(cfg.tokenMint)?cfg.tokenMint:(cfg.launchInProgress?'Launch in progress · CA pending':'Token not launched'));
+const live=validAddress(cfg.tokenMint);if(live){$('token-pill').textContent='TOKEN LIVE';$('token-pill').classList.add('live');}else if(cfg.launchInProgress){const pill=$('token-pill');if(pill)pill.textContent='LAUNCH IN PROGRESS';}
+setLink('pump-link',live&&cfg.pumpUrl?cfg.pumpUrl:'',cfg.launchInProgress?'Pump.fun — launching now; CA pending':'Pump.fun — launch pending');
 setLink('x-link',cfg.xUrl||'','X profile — coming soon');setLink('social-x',cfg.xUrl||'','X profile — coming soon');
 setLink('report-link',cfg.reportUrl||'','Public disbursement reports — pending');
 setLink('ngo-link',cfg.beneficiaryConfirmed?cfg.beneficiaryUrl:'','Beneficiary — pending confirmation');
