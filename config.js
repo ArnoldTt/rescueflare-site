@@ -16,7 +16,7 @@ window.RESCUEFLARE_CONFIG = {
   donationsEnabled: false, // direct nonprofit donations NOT enabled
   projectWalletSupportEnabled: true, // voluntary transfers to independently disclosed project wallet; charity use NOT verified
   donationGoalSol: 8000,
-  organizerReportedSol: 500, // explicitly unverified; illustrative only // Set to true ONLY after recipient, operator, disclosures, and fundraising compliance are verified
+  organizerReportedSol: 429.09, // explicitly unverified; illustrative only // Set to true ONLY after recipient, operator, disclosures, and fundraising compliance are verified
   creatorFeeRecipientText: 'Pending selection and disclosure',
   operatorDisclosure: 'Independent community project. Donation wallet address was supplied by the organizer, but control of the wallet and any nonprofit beneficiary have not yet been verified. Direct donations are not being solicited until required checks are complete. No affiliation with news publishers, animal rescue NGOs, or Pump.fun is claimed.',
   reportUrl: '',      // optional link to publicly accessible grant/payment reports
