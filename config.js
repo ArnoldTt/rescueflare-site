@@ -13,7 +13,8 @@ window.RESCUEFLARE_CONFIG = {
   beneficiaryName: '', // Verified intended recipient's legal name when selected
   beneficiaryUrl: '',
   beneficiaryConfirmed: false,
-  donationsEnabled: false, // Not offering verified charitable donations.\n  projectTransfersEnabled: true, // Only voluntary SOL transfers directly to operator-identified wallet, with disclosures and user acknowledgement
+  donationsEnabled: false, // No verified charitable donations are offered.
+  projectTransfersEnabled: true, // Only voluntary SOL transfers directly to operator-identified wallet, with disclosures and user acknowledgement
   creatorFeeRecipientText: 'Pending selection and disclosure',
   operatorDisclosure: 'Independent Solana meme community. The organizer reports 500 SOL toward an 8,000 SOL project target; that figure, its provenance, and wallet ownership are not independently verified. SOL payments go to a project-supplied wallet, NOT directly to a confirmed animal-rescue nonprofit. No beneficiary agreement or charitable disbursements have been established. Token purchases are not donations. No affiliation with the rescue organizations featured in independent news reports is claimed.',
   reportUrl: '',      // optional link to publicly accessible grant/payment reports
